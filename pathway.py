@@ -47,17 +47,20 @@ def lomics_pathway(input_question, var_num_pathway, var_llm, var_maxtoken, var_t
         succeeded_iterate = 0
         for validated_llm_output in ls_validated_llm_output:
             if validated_llm_output is not None:
-                json_dict = loads(validated_llm_output)
-                json_ls = [value for key, value in json_dict.items()]
-                json_ls = [re.sub(r',', '', value) for value in json_ls]
-                df_output_partial = pd.DataFrame(json_ls, columns=["pathway"])
-                df_output_partial["succeeded_iterate"] = succeeded_iterate
-                df_output_partial["var_iterate_pathway"] = var_iterate_pathway
-                df_output_partial["llm"] = var_llm
-                df_output_partial["temp"] = var_temp
-                df_output_partial["num_pathway"] = var_num_pathway
-                df_output = pd.concat([df_output, df_output_partial])
-                succeeded_iterate += 1
+                try:
+                    json_dict = loads(validated_llm_output)
+                    json_ls = [value for key, value in json_dict.items()]
+                    json_ls = [re.sub(r',', '', value) for value in json_ls]
+                    df_output_partial = pd.DataFrame(json_ls, columns=["pathway"])
+                    df_output_partial["succeeded_iterate"] = succeeded_iterate
+                    df_output_partial["var_iterate_pathway"] = var_iterate_pathway
+                    df_output_partial["llm"] = var_llm
+                    df_output_partial["temp"] = var_temp
+                    df_output_partial["num_pathway"] = var_num_pathway
+                    df_output = pd.concat([df_output, df_output_partial])
+                    succeeded_iterate += 1
+                except:
+                    continue
         df_output.to_csv(os.path.join(output_dir, output_name + "_pathway.csv"), index=False)
 
     ############################################################################################################

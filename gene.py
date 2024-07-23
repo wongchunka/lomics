@@ -47,19 +47,22 @@ def lomics_gene(input_question, var_llm, var_maxtoken, var_temp, var_iterate_gen
         succeeded_iterate = 0
         for validated_llm_output in ls_validated_llm_output:
             if validated_llm_output is not None:
-                json_dict = loads(validated_llm_output)
-                json_ls = [value for key, value in json_dict.items()]
-                json_ls = [re.sub(r',', '', value) for value in json_ls]
-                df_output_partial = pd.DataFrame(json_ls, columns=["gene"])
-                df_output_partial["pathway"] = re.sub(r',', '', pathway)
-                df_output_partial["succeeded_iterate"] = succeeded_iterate
-                df_output_partial["var_iterate_gene"] = var_iterate_gene
-                df_output_partial["llm"] = var_llm
-                df_output_partial["temp"] = var_temp
-                df_output_partial["num_pathway"] = var_num_pathway
-                df_output_partial["num_gene"] = var_num_gene
-                df_output = pd.concat([df_output, df_output_partial])
-                succeeded_iterate += 1
+                try:
+                    json_dict = loads(validated_llm_output)
+                    json_ls = [value for key, value in json_dict.items()]
+                    json_ls = [re.sub(r',', '', value) for value in json_ls]
+                    df_output_partial = pd.DataFrame(json_ls, columns=["gene"])
+                    df_output_partial["pathway"] = re.sub(r',', '', pathway)
+                    df_output_partial["succeeded_iterate"] = succeeded_iterate
+                    df_output_partial["var_iterate_gene"] = var_iterate_gene
+                    df_output_partial["llm"] = var_llm
+                    df_output_partial["temp"] = var_temp
+                    df_output_partial["num_pathway"] = var_num_pathway
+                    df_output_partial["num_gene"] = var_num_gene
+                    df_output = pd.concat([df_output, df_output_partial])
+                    succeeded_iterate += 1
+                except:
+                    continue
         df_output.loc[df_output["gene"].isin(ls_hgnc), "hgnc_valid"] = True
         df_output.loc[~df_output["gene"].isin(ls_hgnc), "hgnc_valid"] = False
         return df_output
