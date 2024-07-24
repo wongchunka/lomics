@@ -19,7 +19,7 @@ os.environ["REPLICATE_API_KEY"] = ""
 var_llm = "replicate/meta/meta-llama-3-70b-instruct"
 var_maxtoken = 3600
 var_temp = 0
-var_max_concurrent_call = 100
+var_max_concurrent_call = 20 # May need to reduce this number if you encounter problem with batch LLM calls
 var_num_pathway = 40
 var_iterate_pathway = 10
 var_num_gene = 40
@@ -37,14 +37,9 @@ async def llm_call(prompt, var_llm, var_maxtoken, var_temp, limit):
                 messages = [{ 
                     "role": "user",
                     "content": prompt,
-                    "max_new_tokens": var_maxtoken,
-                    "temperature": var_temp,
-                    "top_k": 50,
-                    "top_p": 0.9,
-                    "length_penalty": 1,
-                    "presence_penalty": 0,
                 }],
-                max_tokens = var_maxtoken
+                max_tokens = var_maxtoken,
+                temperature = var_temp,
             )
             print(response)
             response = response['choices'][0]['message']['content']

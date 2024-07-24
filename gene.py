@@ -76,7 +76,7 @@ def lomics_gene(input_question, var_llm, var_maxtoken, var_temp, var_iterate_gen
 
     ############################################################################################################
     # Execution
-    with open(path_hgnc, 'r') as file:
+    with open(path_hgnc, 'r', encoding='utf-8') as file:
         json_hgnc = load(file)
 
     ls_hgnc = [item['symbol'] for item in json_hgnc['response']['docs']]
