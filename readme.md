@@ -1,8 +1,8 @@
 <h1>Lomics - Large Language Models for Omics Studies</h1>
 
 <ul>
-<li><strong>Version:</strong> v1.0</li>
-<li><strong>Date:</strong> June 30, 2024</li>
+<li><strong>Version:</strong> v1.1</li>
+<li><strong>Date:</strong> January 5, 2025</li>
 <li><strong>Developers:</strong> Chun-Ka WONG, Ali CHOO, Eugene C. C. CHENG, Wing-Chun SAN, Kelvin Chak-Kong CHENG, Hung-Fat TSE, Jason Wing-Hon WONG (The University of Hong Kong)</li>
 <li><strong>Contact:</strong> wongeck@hku.hk</li>
 <li><strong>Web application:</strong> <a href="http://www.lomics.ai">http://www.lomics.ai</a></li>
@@ -14,7 +14,7 @@
     <ol>
         <li>Identifying relevant pathways based on the researcher's specific inquiry</li>
         <li>Creating valid gene sets for each identified pathway</li>
-        <li>Producing results in .GMX file format</li>
+        <li>Producing results in .GMX and .GMT format</li>
     </ol>
     <p>In addition to generating pathways and gene sets, Lomics provides explanations for its pathway selections. The tool ensures consistency and accuracy through iterative processes, JSON format validation, and verification of gene symbols using the HUGO Gene Nomenclature Committee (HGNC) standards.</p>
     <p>Lomics represents a significant step towards integrating LLMs into omics research, with the potential to enhance the specificity and efficiency of pathway analysis in the field.</p>
@@ -28,7 +28,7 @@ pip install -r requirements.txt
 
 <h2>Settings</h2>
 
-<p>By default, large language model (LLM) API calls are mediated via LiteLLM with Replicate cloud and LLama-3 70B instruct model. Configurations can be modified in setting.py, including:</p>
+<p>By default, large language model (LLM) API calls are mediated via LiteLLM with Replicate cloud and OpenAI GPT-4o model. Configurations can be modified in setting.py, including:</p>
 <ul>
   <li>API key</li>
   <li>Choice of model (visit <a href="https://github.com/BerriAI/litellm">LiteLLM repository</a> for details)</li>
@@ -36,9 +36,9 @@ pip install -r requirements.txt
 
 <p> Other Lomics setting that can adjusted in setting.py, including:</p>
 <ul>
-  <li>Number of pathways to be generated</li>
-  <li>Number of genes to be generated</li>
-  <li>Number of iterations for generating output</li>
+  <li>Number of pathways to be generated (default: 100)</li>
+  <li>Number of genes to be generated (default: 100)</li>
+  <li>Number of iterations for generating output (default: 10 for pathway and 3 for gene)</li>
 </ul>
 
 <h2>Run Lomics on command line interface (CLI)</h2>

@@ -50,6 +50,19 @@ def lomics_report(input_question, var_llm, var_maxtoken, var_temp, var_max_attem
                     f.write("\n")
         return True
 
+    def output_gmt(df_gene, ls_pathway, gmt_output_path):
+        pathway_dict = {}
+        for pathway in ls_pathway:
+            df_pathway = df_gene[df_gene["pathway"] == pathway]
+            pathway_dict[pathway] = df_pathway["gene"].tolist()
+            with open(gmt_output_path, "w") as f:
+                for pathway, genes in pathway_dict.items():
+                    # Format: pathway_name    pathway_description   gene1   gene2   gene3...
+                    f.write(f"{pathway}\t{pathway}\t")
+                    f.write('\t'.join(genes))
+                    f.write("\n")
+        return True
+
     def transpose_file(gmx_output_path):
         with open(gmx_output_path, 'r') as input_file:
             reader = csv.reader(gmx_output_path, delimiter='\t')
@@ -82,4 +95,5 @@ def lomics_report(input_question, var_llm, var_maxtoken, var_temp, var_max_attem
     df_gene = df_gene.sort_values(['pathway', 'count'], ascending=[True, False])
     df_gene = df_gene.groupby('pathway').head(var_num_gene).reset_index(drop=True)
     output_gmx(df_gene, ls_pathway, os.path.join(output_dir, output_name + ".gmx"))
+    output_gmt(df_gene, ls_pathway, os.path.join(output_dir, output_name + ".gmt"))
     transpose_file(os.path.join(output_dir, output_name + ".gmx"))
